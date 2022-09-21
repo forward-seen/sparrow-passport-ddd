@@ -18,9 +18,7 @@ import javax.inject.Named;
 
 @Named
 public class UserRegisterControllerImpl implements UserRegisterController {
-
     private static final String VALIDATE_CODE = "register_validate_code";
-
     @Inject
     private UserRegisterService registeringUserApplicationService;
     @Inject

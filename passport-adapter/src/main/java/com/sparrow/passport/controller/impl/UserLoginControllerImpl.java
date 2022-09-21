@@ -6,6 +6,7 @@ import com.sparrow.constant.User;
 import com.sparrow.exception.Asserts;
 import com.sparrow.protocol.BusinessException;
 import com.sparrow.protocol.ClientInformation;
+import com.sparrow.protocol.Controller;
 import com.sparrow.protocol.LoginToken;
 import com.sparrow.protocol.constant.Constant;
 import com.sparrow.servlet.ServletContainer;
@@ -13,6 +14,7 @@ import com.sparrow.passport.api.UserLoginService;
 import com.sparrow.passport.controller.UserLoginController;
 import com.sparrow.passport.controller.assemble.LoginControllerAssemble;
 import com.sparrow.passport.controller.protocol.query.LoginQuery;
+import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -20,9 +22,11 @@ import javax.inject.Named;
 public class UserLoginControllerImpl implements UserLoginController {
     @Inject
     private ServletContainer servletContainer;
+
     @Inject
     @Named("userLoginApplicationService")
     private UserLoginService userLoginService;
+
     @Inject
     private LoginControllerAssemble loginControllerAssemble;
 
@@ -36,7 +40,7 @@ public class UserLoginControllerImpl implements UserLoginController {
     public LoginToken login(LoginQuery login,
         ClientInformation client) throws BusinessException, CacheNotFoundException {
         String validateCode = servletContainer.flash(Constant.VALIDATE_CODE);
-        this.validateCode(validateCode, login.getValidateCode());
+        //this.validateCode(validateCode, login.getValidateCode());
         LoginToken loginResult = this.userLoginService.login(this.loginControllerAssemble.vo2dto(login, client));
         servletContainer
             .rootCookie(User.PERMISSION, loginResult.getPermission(), loginResult.getDays());
